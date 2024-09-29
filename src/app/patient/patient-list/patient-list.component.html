@@ -1,0 +1,13 @@
+<div class="patient-container">
+  <h2>Our Patients</h2>
+  <div class="patient-grid">
+    <div class="patient-card" *ngFor="let patient of patients">
+      <img [src]="patient.image" alt="{{ patient.name }}" class="patient-image" />
+      <div class="patient-details">
+        <h3>{{ patient.name }}</h3>
+        <p><strong>Age:</strong> {{ patient.age }}</p>
+        <p><strong>Diagnosis:</strong> {{ patient.diagnosis }}</p>
+      </div>
+    </div>
+  </div>
+</div>

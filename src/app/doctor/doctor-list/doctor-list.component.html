@@ -1,0 +1,14 @@
+<div class="doctor-container">
+    <h2>Our Doctors</h2>
+    <div class="doctor-grid">
+      <div class="doctor-card" *ngFor="let doctor of doctors">
+        <img [src]="doctor.image" alt="{{ doctor.name }}" class="doctor-image" />
+        <div class="doctor-details">
+          <h3>{{ doctor.name }}</h3>
+          <p><strong>Specialty:</strong> {{ doctor.specialty }}</p>
+          <p><strong>Experience:</strong> {{ doctor.experience }} years</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

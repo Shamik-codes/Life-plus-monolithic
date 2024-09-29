@@ -1,0 +1,43 @@
+/* Container for patient cards */
+.patient-container {
+  text-align: center;
+  padding: 20px;
+  background-color: #f0fff9;  /* Light green background */
+  border-radius: 12px;
+}
+
+/* Grid layout for patient cards */
+.patient-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Individual patient cards */
+.patient-card {
+  background: white;
+  border-radius: 12px;
+  width: 220px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.patient-card:hover {
+  transform: scale(1.05);  /* Slight zoom effect on hover */
+}
+
+/* Patient image styling for round shape */
+.patient-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;  /* Makes the image round */
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+/* Patient details styling */
+.patient-details {
+  text-align: left;
+}

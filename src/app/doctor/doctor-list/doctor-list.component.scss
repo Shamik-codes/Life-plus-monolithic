@@ -1,0 +1,44 @@
+/* Container for doctor cards */
+.doctor-container {
+    text-align: center;
+    padding: 20px;
+    background-color: #f0f9ff;  /* Light blue background */
+    border-radius: 12px;
+  }
+  
+  /* Grid layout for the cards */
+  .doctor-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  /* Individual doctor cards */
+  .doctor-card {
+    background: white;
+    border-radius: 12px;
+    width: 220px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .doctor-card:hover {
+    transform: scale(1.05);  /* Slight zoom effect on hover */
+  }
+  
+  /* Doctor image styling for round shape */
+  .doctor-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;  /* Makes the image round */
+    object-fit: cover;
+    margin-bottom: 15px;
+  }
+  
+  /* Doctor details styling */
+  .doctor-details {
+    text-align: left;
+  }
+  

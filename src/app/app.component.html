@@ -1,0 +1,25 @@
+<!-- Angular Material Navbar -->
+<mat-toolbar color="primary">
+  <span class="navbar-logo" routerLink="/">Life Plus</span>
+
+  <!-- Spacer to push links to the right -->
+  <span class="spacer"></span>
+
+  <!-- Material Links with Icons -->
+  <button mat-button routerLink="/patients" routerLinkActive="active-link">
+    <mat-icon>groups</mat-icon> Patients
+  </button>
+
+  <button mat-button routerLink="/doctors" routerLinkActive="active-link">
+    <mat-icon>local_hospital</mat-icon> Doctors
+  </button>
+
+  <button mat-button routerLink="/appointments" routerLinkActive="active-link">
+    <mat-icon>event</mat-icon> Appointments
+  </button>
+</mat-toolbar>
+
+<!-- Main Content -->
+<div class="page-container">
+  <router-outlet></router-outlet>
+</div>

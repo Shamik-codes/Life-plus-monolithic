@@ -1,0 +1,60 @@
+<div style="text-align: center;">
+  <h2>Appointment List</h2>
+
+  <!-- Create Appointment Button -->
+  <button id="create-appointment-btn"
+          style="background-color: green; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
+          (click)="openCreateAppointmentForm()">
+    Create Appointment
+  </button>
+</div>
+
+<table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+  <thead>
+    <tr>
+      <th style="border: 1px solid #ccc; padding: 10px;">Time</th>
+      <th style="border: 1px solid #ccc; padding: 10px;">Doctor ID</th>
+      <th style="border: 1px solid #ccc; padding: 10px;">Patient ID</th>
+      <th style="border: 1px solid #ccc; padding: 10px;">Date</th>
+      <th style="border: none; padding: 10px; border-bottom: 1px solid #ccc;"></th>
+    </tr>
+  </thead>
+  <tbody id="appointments-table-body">
+    <!-- Appointments will be dynamically added here -->
+  </tbody>
+</table>
+
+<!-- Create New Appointment Form -->
+<div id="create-appointment-form" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1000; display: none;">
+  <h3>Create New Appointment</h3>
+
+  <label>Time:</label>
+  <input type="time" 
+         style="margin: 10px 0; padding: 5px; width: 100%;" 
+         (change)="onInputChange($event, 'time')"/>
+
+  <label>Doctor ID:</label>
+  <input type="number" placeholder="Enter Doctor ID" 
+         style="margin: 10px 0; padding: 5px; width: 100%;" 
+         (change)="onInputChange($event, 'doctorId')"/>
+
+  <label>Patient ID:</label>
+  <input type="number" placeholder="Enter Patient ID" 
+         style="margin: 10px 0; padding: 5px; width: 100%;" 
+         (change)="onInputChange($event, 'patientId')"/>
+
+  <label>Date:</label>
+  <input type="date" 
+         style="margin: 10px 0; padding: 5px; width: 100%;" 
+         (change)="onInputChange($event, 'date')"/>
+
+  <button style="margin: 5px; background-color: green; color: white; border: none; border-radius: 5px; cursor: pointer;"
+          (click)="createAppointment()">
+    Create
+  </button>
+  <button style="margin: 5px; background-color: gray; color: white; border: none; border-radius: 5px; cursor: pointer;"
+          (click)="cancelCreateAppointment()">
+    Cancel
+  </button>
+</div>
