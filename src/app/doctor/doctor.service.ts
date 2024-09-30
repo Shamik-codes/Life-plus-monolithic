@@ -16,7 +16,7 @@ export interface Doctor {
 })
 export class DoctorService {
   // The base URL of the Django API for doctors
-  private baseUrl = 'http://127.0.0.1:8000/api/api/doctors/';
+  private baseUrl = 'http://127.0.0.1:8000/api/doctors/';
 
   constructor(private http: HttpClient) {}
 

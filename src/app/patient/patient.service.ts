@@ -15,7 +15,7 @@ export interface Patient {
   providedIn: 'root'  // Makes the service available application-wide
 })
 export class PatientService {
-  private baseUrl = 'http://127.0.0.1:8000/api/api/patients/';  // Replace with your Django REST API endpoint
+  private baseUrl = 'http://127.0.0.1:8000/api/patients/';  // Replace with your Django REST API endpoint
 
   constructor(private http: HttpClient) {}
 
