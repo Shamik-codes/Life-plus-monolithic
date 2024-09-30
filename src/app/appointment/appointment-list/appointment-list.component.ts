@@ -111,7 +111,7 @@ export class AppointmentListComponent implements OnInit{
         const row = document.createElement('tr');
         row.innerHTML = `
           <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">${appointment.time}</td>
-          <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">${appointment.doctor} - ${appointment.doctorName}</td>
+          <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">${appointment.doctor}</td>
           <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">${appointment.patient}</td>
           <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">${appointment.date}</td>
           <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
