@@ -1,11 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
+interface Doctor {
+  id: number;
+  name: string;
+}
+
 interface Appointment {
   time: string;
   doctorId: string;
+  doctorName?: string; 
   patientId: string;
   date: string;
 }
@@ -15,8 +21,9 @@ interface Appointment {
   templateUrl: './appointment-list.component.html',
   styleUrls: []
 })
-export class AppointmentListComponent {
+export class AppointmentListComponent implements OnInit{
   appointments: any[] = [];
+  doctors: any[] = [];
   showCreateAppointmentForm = false;
 
   newAppointment: Appointment = {
@@ -30,9 +37,13 @@ export class AppointmentListComponent {
     this.getAppointments(); // Load appointments on component initialization
   }
 
+  ngOnInit(): void {
+    this.fetchAppointments(); // Call fetchAppointments() here to fetch data when the component is loaded
+  }
+  
   // Fetch all appointments
   getAppointments() {
-    this.http.get('http://localhost:8000/api/api/get-appointments/')
+    this.http.get('http://localhost:8000/api/appointments/')
       .pipe(
         catchError((error) => {
           console.error('Error fetching appointments:', error);
@@ -45,24 +56,77 @@ export class AppointmentListComponent {
       });
   }
 
+  fetchDoctors(): Promise<Doctor[]> {
+    return fetch('http://localhost:8000/api/doctors') 
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch doctors');
+        }
+        return response.json() as Promise<Doctor[]>;
+      })
+      .catch(error => {
+        console.error('Error fetching doctors:', error);
+        return []; // Return an empty array in case of error
+      });
+  }
+
+  // Fetch the list of appointments and map doctor names
+  fetchAppointments(): void {
+    // First fetch the list of doctors
+    this.fetchDoctors().then((doctors: Doctor[]) => {
+      this.doctors = doctors;
+
+      fetch('http://localhost:8000/api/appointments')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to fetch appointments');
+          }
+          return response.json() as Promise<Appointment[]>;
+        })
+        .then((appointments: Appointment[]) => {
+          // Map doctor names to each appointment
+          this.appointments = appointments.map(appointment => {
+            const doctor = this.doctors.find(doc => doc.id === appointment.doctorId);
+            return {
+              ...appointment,
+              doctorName: doctor ? doctor.name : 'Unknown Doctor'
+            };
+          });
+
+          // Now render the appointments
+          this.renderAppointments();
+        })
+        .catch(error => {
+          console.error('Error fetching appointments:', error);
+        });
+    });
+  }
+
   // Render appointments in the HTML table
   renderAppointments() {
     const appointmentsTableBody = document.getElementById('appointments-table-body');
     if (appointmentsTableBody) {
       appointmentsTableBody.innerHTML = ''; // Clear existing entries
-      this.appointments.forEach(appointment => {
+      this.appointments.forEach((appointment, index: number) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td style="border: 1px solid #ccc; padding: 10px;">${appointment.time}</td>
-          <td style="border: 1px solid #ccc; padding: 10px;">${appointment.doctor_id}</td>
-          <td style="border: 1px solid #ccc; padding: 10px;">${appointment.patient_id}</td>
-          <td style="border: 1px solid #ccc; padding: 10px;">${appointment.date}</td>
-          <td style="border: 1px solid #ccc; padding: 10px;">
-            <button style="background-color: red; color: white; border: none; border-radius: 5px; cursor: pointer;"
-                    onclick="confirmDelete(${appointment.id})">Delete</button>
+          <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">${appointment.time}</td>
+          <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">${appointment.doctor} - ${appointment.doctorName}</td>
+          <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">${appointment.patient}</td>
+          <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">${appointment.date}</td>
+          <td style="border: 1px solid #ccc; padding: 10px; text-align: center;">
+            <button id="delete-button-${index}" style="background-color: red; color: white; border: none; border-radius: 5px; cursor: pointer; padding: 10px; font-size: 1rem;">
+              Delete
+            </button>
           </td>
         `;
         appointmentsTableBody.appendChild(row);
+  
+        // Attach event listener to the button dynamically
+        const deleteButton = document.getElementById(`delete-button-${index}`);
+        if (deleteButton) {
+          deleteButton.addEventListener('click', () => this.confirmDelete(appointment.id));
+        }
       });
     }
   }
@@ -77,14 +141,14 @@ export class AppointmentListComponent {
   // Create a new appointment
   createAppointment() {
     const appointmentData = {
-      doctor_id: this.newAppointment.doctorId,
-      patient_id: this.newAppointment.patientId,
+      doctor: this.newAppointment.doctorId,
+      patient: this.newAppointment.patientId,
       date: this.newAppointment.date,
       time: this.newAppointment.time
     };
 
     // Post request to create an appointment
-    this.http.post('http://localhost:8000/api/api/create-appointment/', appointmentData)
+    this.http.post('http://localhost:8000/api/appointments/create_appointments/', appointmentData)
       .pipe(
         catchError((error) => {
           console.error('Error creating appointment:', error);
@@ -95,6 +159,7 @@ export class AppointmentListComponent {
         if (response) {
           alert('Appointment created successfully!');
           this.getAppointments();  // Refresh the appointments list
+          this.resetNewAppointment();
           this.cancelCreateAppointment();  // Close the form
         }
       });
@@ -109,6 +174,17 @@ export class AppointmentListComponent {
   // Reset the new appointment data
   resetNewAppointment() {
     this.newAppointment = { time: '', doctorId: '', patientId: '', date: '' };
+
+    // Update the form inputs to match the reset state
+    const timeInput = document.querySelector('input[type="time"]') as HTMLInputElement;
+    const doctorInput = document.querySelector('input[placeholder="Enter Doctor ID"]') as HTMLInputElement;
+    const patientInput = document.querySelector('input[placeholder="Enter Patient ID"]') as HTMLInputElement;
+    const dateInput = document.querySelector('input[type="date"]') as HTMLInputElement;
+
+    if (timeInput) timeInput.value = '';
+    if (doctorInput) doctorInput.value = '';
+    if (patientInput) patientInput.value = '';
+    if (dateInput) dateInput.value = '';
   }
 
   // Update form visibility in HTML
@@ -135,7 +211,7 @@ export class AppointmentListComponent {
 
   // Delete the selected appointment
   deleteAppointment(appointmentId: number) {
-    this.http.delete(`http://localhost:8000/api/api/delete-appointment/${appointmentId}/`)
+    this.http.delete(`http://localhost:8000/api/appointments/${appointmentId}/`)
       .pipe(
         catchError((error) => {
           console.error('Error deleting appointment:', error);
