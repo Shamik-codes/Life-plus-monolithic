@@ -3,7 +3,7 @@
 
   <!-- Create Appointment Button -->
   <button id="create-appointment-btn"
-          style="background-color: green; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;"
+          style="background-color: green; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1.5rem;"
           (click)="openCreateAppointmentForm()">
     Create Appointment
   </button>
@@ -16,7 +16,7 @@
       <th style="border: 1px solid #ccc; padding: 10px;">Doctor ID</th>
       <th style="border: 1px solid #ccc; padding: 10px;">Patient ID</th>
       <th style="border: 1px solid #ccc; padding: 10px;">Date</th>
-      <th style="border: none; padding: 10px; border-bottom: 1px solid #ccc;"></th>
+      <th style="border: 1px solid #ccc; padding: 10px;">Action</th>
     </tr>
   </thead>
   <tbody id="appointments-table-body">
@@ -35,12 +35,12 @@
          (change)="onInputChange($event, 'time')"/>
 
   <label>Doctor ID:</label>
-  <input type="number" placeholder="Enter Doctor ID" 
+  <input type="number" min="1" placeholder="Enter Doctor ID" 
          style="margin: 10px 0; padding: 5px; width: 100%;" 
          (change)="onInputChange($event, 'doctorId')"/>
 
   <label>Patient ID:</label>
-  <input type="number" placeholder="Enter Patient ID" 
+  <input type="number" min="1" placeholder="Enter Patient ID" 
          style="margin: 10px 0; padding: 5px; width: 100%;" 
          (change)="onInputChange($event, 'patientId')"/>
 
@@ -49,11 +49,11 @@
          style="margin: 10px 0; padding: 5px; width: 100%;" 
          (change)="onInputChange($event, 'date')"/>
 
-  <button style="margin: 5px; background-color: green; color: white; border: none; border-radius: 5px; cursor: pointer;"
+  <button style="margin: 5px; background-color: green; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; padding: 10px; margin-top: 15px; float: right;"
           (click)="createAppointment()">
     Create
   </button>
-  <button style="margin: 5px; background-color: gray; color: white; border: none; border-radius: 5px; cursor: pointer;"
+  <button style="margin: 5px; background-color: gray; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1rem; padding: 10px; margin-top: 15px; float: right;"
           (click)="cancelCreateAppointment()">
     Cancel
   </button>
